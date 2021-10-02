@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 import time
 import random
 from pygame.draw import polygon
@@ -23,12 +24,30 @@ win = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
 display = pygame.Surface(DISPLAY_SIZE)
 
 # LOAD IMAGES =============================================================== #
-bg_img1 = pygame.image.load('assets/background/background_1.png').convert()
-bg_img2 = pygame.image.load('assets/background/background_2.png').convert()
-bg_img3 = pygame.image.load('assets/background/background_3.png').convert()
-bg_img4 = pygame.image.load('assets/background/background_4.png').convert()
-bg_img5 = pygame.image.load('assets/background/background_5.png').convert()
-bg_img6 = pygame.image.load('assets/background/background_6.png').convert()
+
+
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+bg_img1 = pygame.image.load(resource_path(
+    'assets/background/background_1.png')).convert()
+bg_img2 = pygame.image.load(resource_path(
+    'assets/background/background_2.png')).convert()
+bg_img3 = pygame.image.load(resource_path(
+    'assets/background/background_3.png')).convert()
+bg_img4 = pygame.image.load(resource_path(
+    'assets/background/background_4.png')).convert()
+bg_img5 = pygame.image.load(resource_path(
+    'assets/background/background_5.png')).convert()
+bg_img6 = pygame.image.load(resource_path(
+    'assets/background/background_6.png')).convert()
 backgrounds = [bg_img1, bg_img2, bg_img3, bg_img4, bg_img5, bg_img6]
 
 player1 = pygame.image.load('assets/player/player1.png').convert()
@@ -137,7 +156,6 @@ class water():
     def splash(self, index, speed):
         if index > 0 and index < len(self.springs):
             self.springs[index].velocity = speed
-            print(speed)
             for i in range(int(speed-10)):
                 splash_particles.append([[player.hitbox().center[0] + random.randint(-10, 10), self.springs[index].y_pos + speed/3], [
                                         random.uniform(-speed/50, +speed/50), -speed/60 + random.uniform(-5, 0)], random.randint(1, 4)])
